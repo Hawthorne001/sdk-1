@@ -459,7 +459,6 @@ namespace Microsoft.DotNet.Watch.UnitTests
             Assert.Equal(1, App.Process.Output.Count(line => line.StartsWith("dotnet watch ⌚ Launching browser: ")));
             App.Process.ClearOutput();
 
-#if TODO // needs Roslyn update
             // rude edit with build error:
             UpdateSourceFile(
                 serviceSourcePath,
@@ -491,16 +490,6 @@ namespace Microsoft.DotNet.Watch.UnitTests
             App.AssertOutputContains("error CS0246: The type or namespace name 'WeatherForecast' could not be found");
             App.Process.ClearOutput();
 
-            // TODO: remove
-            Log("dotnet build-server shutdown");
-            var workloadInstallCommandSpec = new DotnetCommand(Logger, ["build-server", "shutdown"])
-            {
-                WorkingDirectory = testAsset.Path,
-            };
-
-            var result = workloadInstallCommandSpec.Execute();
-            Assert.Equal(0, result.ExitCode);
-
             // fix build error:
             UpdateSourceFile(
                 serviceSourcePath,
@@ -509,8 +498,9 @@ namespace Microsoft.DotNet.Watch.UnitTests
             await App.AssertOutputLineStartsWith("dotnet watch ⌚ [WatchAspire.ApiService (net9.0)] Capabilities");
 
             App.AssertOutputContains("dotnet watch ⌚ Build succeeded.");
+            App.AssertOutputContains("dotnet watch 🔥 Project baselines updated.");
             App.AssertOutputContains($"dotnet watch ⭐ Starting project: {serviceProjectPath}");
-#endif
+
             App.SendControlC();
 
             await App.AssertOutputLineStartsWith("dotnet watch 🛑 Shutdown requested. Press Ctrl+C again to force exit.");
