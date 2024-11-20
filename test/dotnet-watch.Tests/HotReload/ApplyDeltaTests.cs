@@ -483,7 +483,7 @@ namespace Microsoft.DotNet.Watch.UnitTests
             }
             else
             {
-                // TODO: sometimes the process fails with
+                // Unix process may return exit code = 128 + SIGTERM
                 // dotnet watch ❌ [WatchAspire.ApiService (net9.0)] Exited with error code 143
                 App.AssertOutputContains("[WatchAspire.ApiService (net9.0)] Exited");
             }
@@ -515,7 +515,7 @@ namespace Microsoft.DotNet.Watch.UnitTests
             }
             else
             {
-                // TODO: sometimes the process fails with
+                // Unix process may return exit code = 128 + SIGTERM
                 // dotnet watch ❌ [WatchAspire.ApiService (net9.0)] Exited with error code 143
                 await App.AssertOutputLineStartsWith("[WatchAspire.ApiService (net9.0)] Exited");
                 await App.AssertOutputLineStartsWith("[WatchAspire.AppHost (net9.0)] Exited");
