@@ -312,6 +312,9 @@ namespace Microsoft.DotNet.Watch
 
                         if (projectsToRebuild.Count > 0)
                         {
+                            // Discard baselines before build.
+                            compilationHandler.DiscardProjectBaselines(projectsToRebuild, iterationCancellationToken);
+
                             while (true)
                             {
                                 iterationCancellationToken.ThrowIfCancellationRequested();

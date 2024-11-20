@@ -72,7 +72,7 @@ namespace Microsoft.DotNet.Watch
             Dispose();
         }
 
-        public void UpdateProjectBaselines(ImmutableDictionary<ProjectId, string> projectsToBeRebuilt, CancellationToken cancellationToken)
+        public void DiscardProjectBaselines(ImmutableDictionary<ProjectId, string> projectsToBeRebuilt, CancellationToken cancellationToken)
         {
             // Remove previous updates to all modules that were affected by rude edits.
             // All running projects that statically reference these modules have been terminated.
@@ -85,6 +85,11 @@ namespace Microsoft.DotNet.Watch
                 _previousUpdates = _previousUpdates.RemoveAll(update => projectsToBeRebuilt.ContainsKey(update.ProjectId));
             }
 
+            _hotReloadService.UpdateBaselines(Workspace.CurrentSolution, projectsToBeRebuilt.Keys.ToImmutableArray());
+        }
+
+        public void UpdateProjectBaselines(ImmutableDictionary<ProjectId, string> projectsToBeRebuilt, CancellationToken cancellationToken)
+        {
             _hotReloadService.UpdateBaselines(Workspace.CurrentSolution, projectsToBeRebuilt.Keys.ToImmutableArray());
             _reporter.Report(MessageDescriptor.ProjectBaselinesUpdates);
         }
