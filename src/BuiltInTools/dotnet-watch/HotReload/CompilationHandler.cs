@@ -91,7 +91,7 @@ namespace Microsoft.DotNet.Watch
         public void UpdateProjectBaselines(ImmutableDictionary<ProjectId, string> projectsToBeRebuilt, CancellationToken cancellationToken)
         {
             _hotReloadService.UpdateBaselines(Workspace.CurrentSolution, projectsToBeRebuilt.Keys.ToImmutableArray());
-            _reporter.Report(MessageDescriptor.ProjectBaselinesUpdates);
+            _reporter.Report(MessageDescriptor.ProjectBaselinesUpdated);
         }
 
         public async ValueTask StartSessionAsync(CancellationToken cancellationToken)
