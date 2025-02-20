@@ -20,10 +20,10 @@
   </Target>
 
   <ItemGroup Label=".NET 10.0 templates">
-    <Bundled100Templates Include="Microsoft.DotNet.Web.ItemTemplates.10.0" PackageVersion="$(AspNetCorePackageVersionFor100Templates)" />
-    <Bundled100Templates Include="Microsoft.DotNet.Web.ProjectTemplates.10.0" PackageVersion="$(AspNetCorePackageVersionFor100Templates)" UseVersionForTemplateInstallPath="true" />
-    <Bundled100Templates Include="Microsoft.Dotnet.WinForms.ProjectTemplates" PackageVersion="$(MicrosoftDotnetWinFormsProjectTemplates100PackageVersion)" Condition="'$(DotNetBuildSourceOnly)' != 'true'" />
-    <Bundled100Templates Include="Microsoft.Dotnet.Wpf.ProjectTemplates" PackageVersion="$(MicrosoftDotnetWpfProjectTemplates100PackageVersion)" Condition="'$(DotNetBuildSourceOnly)' != 'true'" />
+    <Bundled100Templates Include="Microsoft.DotNet.Web.ItemTemplates.10.0" PackageVersion="$(MicrosoftDotNetWebItemTemplates100PackageVersion)" />
+    <Bundled100Templates Include="Microsoft.DotNet.Web.ProjectTemplates.10.0" PackageVersion="$(MicrosoftDotNetWebProjectTemplates100PackageVersion)" UseVersionForTemplateInstallPath="true" />
+    <Bundled100Templates Include="Microsoft.Dotnet.WinForms.ProjectTemplates" PackageVersion="$(MicrosoftDotNetWinFormsProjectTemplatesPackageVersion)" Condition="'$(DotNetBuildSourceOnly)' != 'true'" />
+    <Bundled100Templates Include="Microsoft.Dotnet.Wpf.ProjectTemplates" PackageVersion="$(MicrosoftDotNetWpfProjectTemplatesPackageVersion)" Condition="'$(DotNetBuildSourceOnly)' != 'true'" />
   </ItemGroup>
 
   <ItemGroup>
@@ -86,7 +86,7 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="LayoutTemplatesForSDK" DependsOnTargets="SetupBundledComponents;CalculateTemplatesVersions;DownloadBundledTemplateNupkgs;GetRepoTemplates">
+  <Target Name="LayoutTemplatesForSDK" DependsOnTargets="CalculateTemplatesVersions;DownloadBundledTemplateNupkgs;GetRepoTemplates">
     <ItemGroup Condition="!$(ProductMonikerRid.StartsWith('win'))">
       <BundledTemplatesWithInstallPaths Remove="Microsoft.Dotnet.Wpf.ProjectTemplates" />
       <BundledTemplatesWithInstallPaths Remove="Microsoft.Dotnet.WinForms.ProjectTemplates" />
@@ -105,7 +105,7 @@
           DestinationFiles="$(RedistLayoutPath)templates\$(CurrentTemplateInstallPath)\$([System.String]::Copy('%(Filename)%(Extension)').ToLowerInvariant())" />
   </Target>
 
-  <Target Name="LayoutTemplatesForMSI" DependsOnTargets="SetupBundledComponents;CalculateTemplatesVersions;GetRepoTemplates" Condition="$(ProductMonikerRid.StartsWith('win')) And '$(Architecture)' != 'arm'">
+  <Target Name="LayoutTemplatesForMSI" DependsOnTargets="CalculateTemplatesVersions;GetRepoTemplates" Condition="$(ProductMonikerRid.StartsWith('win')) And '$(Architecture)' != 'arm'">
     <Copy SourceFiles="%(BundledTemplatesWithInstallPaths.RestoredNupkgPath)"
           DestinationFolder="$(BaseOutputPath)$(Configuration)\templates-%(BundledTemplatesWithInstallPaths.TemplateFrameworkVersion)\templates\%(BundledTemplatesWithInstallPaths.BundledTemplateInstallPath)" />
 
